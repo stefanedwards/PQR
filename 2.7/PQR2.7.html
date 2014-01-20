@@ -122,7 +122,7 @@ Richard Gruet</a> (pqr at rgruet.net).<br />
 </a> Creative Commons License.
 <p />Last updated on <!-- #BeginDate format:Am1 -->April 16, 2013<!-- #EndDate -->.
 <dl>
-  <dt>Apr 16, 2013</dt>
+  <dt>Apr 16-May 27, 2013</dt>
   <dd>Some corrections, see bottom, by <a href="javascript:location='mailto:\u0073\u006d\u0065\u0040\u0069\u0079\u0073\u0069\u006b\u002e\u0063\u006f\u006d;';void 0">Stefan McKinnon H&oslash;j-Edwards</a>.</dd>
   <dt>Oct, 2011</dt>
   <dd>upgraded by Stefan McKinnon H&oslash;j-Edwards for Python 2.7</dd>
@@ -3009,10 +3009,24 @@ class C(object):
 <br />
 <a name="listComprehensions" id="listComprehensions"></a>
 <blockquote class="since20"> <b>List comprehensions</b>
-  <pre><i>result</i> = <b>[</b><i>expression</i> <b>for</b> <i>item1</i> <b>in</b> <i>sequence1  [</i><b>if</b> <i>condition1</i>]<br />             [<b>for</b> <i>item2</i> <b>in</b> <i>sequence2</i> ... <b>for</b> <i>itemN</i> <b>in</b> <i>sequenceN</i>]<br />         <b>]</b></pre>
+  <pre><i>result</i> = <b>[</b><i>expression</i> <b>for</b> <i>item1</i> <b>in</b> <i>sequence1</i>  <i>[</i><b>if</b> <i>condition1</i><i>]</i>
+  <i>[</i><b>for</b> <i>item2</i> <b>in</b> <i>sequence2</i> <i>[</i><b>if</b> <i>condition2</i><i>]</i> ... <b>for</b> <i>itemN</i> <b>in</b> <i>sequenceN</i><i> <i>[</i><b>if</b> <i>conditionN</i><i>]</i>]</i>
+  <b>]</b></pre>
+  
 is equivalent to:
-        <pre><i>result</i> = []<br /><b>for</b> <i>item1</i> <b>in</b> <i>sequence1</i>:<br />    <b>for</b> <i>item2</i> <b>in</b> <i>sequence2</i>:<br />        ...<br />        <b>for</b> <i>itemN</i> <b>in</b> <i>sequenceN</i>:<br />            <b>if</b> (<i>condition1</i>) <b>and</b> <i>further conditions</i>:<br />               <i>result</i>.append(<i>expression</i>)</pre>
+  <pre>
+<i>result</i> = []
+<b>for</b> <i>item1</i> <b>in</b> <i>sequence1</i>:
+  <b>if</b> (<i>condition1</i>):
+    <b>for</b> <i>item2</i> <b>in</b> <i>sequence2</i>:
+      <b>if</b> (<i>condition2</i>):
+        ...
+        <b>for</b> <i>itemN</i> <b>in</b> <i>sequenceN</i>:
+          <b>if</b> (<i>conditionN</i>):
+            <i>result</i>.append(<i>expression</i>)</pre>
 	</blockquote>
+<p>NB! Note that in the list comprehension example, the outer (non-italic) square brackets are <i>mandatory</i> (for lists, round brackets for sets or curly brackets for dictionaries, see below),
+whereas the middle, italic brackets indicate <i>optional</i> blocks in the list comprehension.</p>
 <blockquote class="since27"> <b>List comprehensions for dictionaries and sets</b>
 	<pre>>>> {x: x*x for x in range(6)}
 		{0: 0, 1: 1, 2: 4, 3: 9, 4: 16, 5: 25} <i># Dictionary</i></pre>
@@ -6026,7 +6040,7 @@ which results in
     </tr>
     <tr>
       <td> sin(<i>x</i>) </td>
-      <td> Returns the sine (measured in radians) of <i>x</i>. </td>
+      <td> Returns the sine of <i>x</i> (measured in radians). </td>
     </tr>
     <tr>
       <td> sinh(<i>x</i>) </td>
@@ -6038,7 +6052,7 @@ which results in
     </tr>
     <tr>
       <td> tan(<i>x</i>) </td>
-      <td> Returns the tangent (measured in radians) of <i>x</i>.</td>
+      <td> Returns the tangent of <i>x</i> (measured in radians).</td>
     </tr>
     <tr>
       <td> tanh(<i>x</i>) </td>
@@ -7459,6 +7473,10 @@ c C-p         move to statement preceding point<br />C-c C-n         move to sta
 <!-- Changes -->
 <h2> <a id="changes" name="changes">Changes to this document</a></h2>
 <dl>
+  <dt>May 27, 2013 (Stefan McKinnon H&oslash;j-Edwards)</dt>
+  <dd>Corrected the <a href="#listComprehensions">list comprehensions</a> description. 
+      See <a href="http://www.iysik.com/pqr2.7/list_comprehensions">www.iysik.com/pqr2.7/list_comprehensions</a> for an in depth examination of why it was wrong.
+  </dd>
   <dt>April, 2013 (Stefan McKinnon H&oslash;j-Edwards)</dt>
   <dd>Corrections
     <ul>
