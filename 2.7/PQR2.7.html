@@ -120,8 +120,10 @@ Richard Gruet</a> (pqr at rgruet.net).<br />
 <a target="_blank" rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/deed.en_US">
 <img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/2.0/fr/88x31.png" />
 </a> Creative Commons License.
-<p />Last updated on <!-- #BeginDate format:Am1 -->October 9, 2011<!-- #EndDate -->.
+<p />Last updated on <!-- #BeginDate format:Am1 -->April 16, 2013<!-- #EndDate -->.
 <dl>
+  <dt>Apr 16, 2013</dt>
+  <dd>Some corrections, see bottom, by <a href="javascript:location='mailto:\u0073\u006d\u0065\u0040\u0069\u0079\u0073\u0069\u006b\u002e\u0063\u006f\u006d;';void 0">Stefan McKinnon H&oslash;j-Edwards</a>.</dd>
   <dt>Oct, 2011</dt>
   <dd>upgraded by Stefan McKinnon H&oslash;j-Edwards for Python 2.7</dd>
   <dt>Feb 10, 2009</dt>
@@ -3812,6 +3814,19 @@ in user-defined classes), e.g.:
         <td> Called when an instance is called as function: <code>obj(arg1, arg2, ...)</code> is a shorthand for
              <code>obj.__call__(arg1, arg2, ...)</code>.</td>
       </tr>
+      <tr class="since26">
+        <td> <b>__enter__</b>(<i>self</i>) </td>
+        <td> For use with context managers, i.e. when entering the block in a <a href="#withStatement">with-statement</a>. 
+             The <code>with</code> statement binds this method's return value to the <code>as</code> object.</td>
+      </tr>
+      <tr class="since26">
+        <td> <b>__exit__</b>(<i>self</i>, <i>type</i>, <i>value</i>, <i>traceback</i>) </td>
+        <td> When exiting the block of a <a href="#withStatement">with-statement</a>.
+             If no errors occured, <i>type</i>, <i>value</i>, <i>traceback</i> are <code>None</code>.
+             If an error occured, they will contain information about the class of the exception, the exception object and a traceback object, respectively.
+             If the exception is handled properly, return <code>True</code>. If it returns <code>False</code>, the with-block re-raises the exception.
+             </td>
+        </tr>
     </tbody>
   </table>
 
@@ -5805,6 +5820,38 @@ Match objects are returned by the match &amp; search functions. <br />
   </tbody>
 </table>
 
+<!-- re.Scanner objects -->
+<a id="reScanner" name="reScanner"></a>
+<h3>Lexical scanners using regular expressions</h3>
+There's an undocumented class in the <code>re</code> module called <code>re.Scanner</code>.
+The following recipee is from <a href="http://stackoverflow.com/questions/691148/pythonic-way-to-implement-a-tokenizer">stackoverflow</a>:
+
+<pre>
+import re
+scanner=re.Scanner([
+  (r"[0-9]+",           lambda scanner,token:("INTEGER", token)),
+  (r"[a-z_]+",          lambda scanner,token:("IDENTIFIER", token)),
+  (r"[,.]+",            lambda scanner,token:("PUNCTUATION", token)),
+  (r"\s+", None), # None == skip token.
+])
+
+results, remainder=scanner.scan("45 pigeons, 23 cows, 11 spiders.")
+print results
+</pre>
+
+which results in 
+
+<pre>
+[('INTEGER', '45'),
+ ('IDENTIFIER', 'pigeons'),
+ ('PUNCTUATION', ','),
+ ('INTEGER', '23'),
+ ('IDENTIFIER', 'cows'),
+ ('PUNCTUATION', ','),
+ ('INTEGER', '11'),
+ ('IDENTIFIER', 'spiders'),
+ ('PUNCTUATION', '.')]
+</pre>
 <!-- MATH -->
 <a id="mathModule" name="mathModule"></a>
 <h3>math</h3>
@@ -6157,7 +6204,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Register functions to be called at exit of Python interpreter. </td>
     </tr>
     <tr>
-      <td> audiodev </td>
+      <td> <strike> audiodev </strike> </td>
       <td> Classes for manipulating audio devices (currently only for Sun and SGI).
            <span class="since26">Deprecated since 2.6.</span> </td>
     </tr>
@@ -6170,7 +6217,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Conversions to/from base64 transport encoding as per RFC-1521. </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/BaseHTTPServer.html">BaseHTTPServer</a></td>
+      <td> <a href="http://docs.python.org/2.7/library/basehttpserver.html">BaseHTTPServer</a></td>
       <td> HTTP server base class </td>
     </tr>
     <tr class="since23">
@@ -6210,7 +6257,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Wraps the WWW Forms Common Gateway Interface (CGI). </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/CGIHTTPServer.html">CGIHTTPServer</a></td>
+      <td> <a href="http://docs.python.org/2.7/library/cgihttpserver.html">CGIHTTPServer</a></td>
       <td> CGI-savvy HTTP Server. </td>
     </tr>
     <tr class="since22">
@@ -6271,7 +6318,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Force &quot;compilation&quot; of all .py files in a directory. </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/ConfigParser.html">ConfigParser</a></td>
+      <td> <a href="http://docs.python.org/2.7/library/configparser.html">ConfigParser</a></td>
       <td> Configuration file parser (much like windows .ini files). </td>
     </tr>
     <tr class="since25">
@@ -6279,7 +6326,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Utilities for <code>with</code> statement contexts.</td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/Cookie.html"> Cookie </a></td>
+      <td> <a href="http://docs.python.org/2.7/library/cookie.html"> Cookie </a></td>
       <td> HTTP state (cookies) management. </td>
     </tr>
     <tr>
@@ -6291,7 +6338,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Helper to provide extensibility for modules pickle/cPickle. </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/cPickle.html"> cPickle </a> </td>
+      <td> <a href="http://docs.python.org/2.7/library/pickle.html#module-cPickle"> cPickle </a> </td>
       <td> Faster, C implementation of <a href="http://docs.python.org/2.7/library/pickle.html">pickle</a>. </td>
     </tr>
     <tr class="since25">
@@ -6303,8 +6350,8 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Function to check Unix passwords <span class="warning">[Unix]</span>. </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/cStringIO.html"> cStringIO </a> </td>
-      <td> Faster, C implementation of <a href="http://docs.python.org/2.7/library/StringIO.html">StringIO</a>. </td>
+      <td> <a href="http://docs.python.org/2.7/library/stringio.html#module-cStringIO"> cStringIO </a> </td>
+      <td> Faster, C implementation of <a href="http://docs.python.org/2.7/library/stringio.html">StringIO</a>. </td>
     </tr>
     <tr class="since23">
       <td> <a class="since23" href="http://docs.python.org/2.7/library/csv.html">csv</a></td>
@@ -6341,7 +6388,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
            <span class="since25">2.5: Improved <code>SequenceMatcher.get_matching_blocks()</code> method .</span>  </td>
     </tr>
     <tr>
-      <td> <strike> <a href="http://docs.python.org/2.5/library/dircache.html">dircache</a> </strike> </td>
+      <td> <strike> <a href="http://docs.python.org/2.7/library/dircache.html">dircache</a> </strike> </td>
       <td> <strike> Sorted list of files in a dir, using a cache.</strike> <span class="since26">Deprecated since 2.6.</span> </td>
     </tr>
     <tr class="since20">
@@ -6380,7 +6427,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
 	  <td> <span class="since27">In 2.7 moved to separate module <code>sysconfig</code>.</span> </td>
 	</tr>
     <tr>
-      <td> <strike> <a href="http://docs.python.org/2.5/library/dl.html">dl</a> </stike> </td>
+      <td> <strike> <a href="http://docs.python.org/2.7/library/dl.html">dl</a> </stike> </td>
       <td> <strike> Call C functions in shared objects <span class="warning">[Unix]</span>. </strike>
            <span class="since26">Deprecated since 2.6.</span> </td>
     </tr>
@@ -6390,7 +6437,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
            <span class="since25">2.5: New <code>SKIP</code> option. New <i>encoding</i> arg to <code>testfile()</code> function.</span></td>
     </tr>
     <tr class="since23">
-      <td> <a class="since23" href="http://docs.python.org/2.7/library/DocXMLRPCServer.html">DocXMLRPCServer</a></td>
+      <td> <a class="since23" href="http://docs.python.org/2.7/library/docxmlrpcserver.html">DocXMLRPCServer</a></td>
       <td> Creation of self-documenting XML-RPC servers, using pydoc to create HTML API doc on the fly.
            <span class="since25">2.5: New attribute <code>rpc_paths</code>.</span></td>
     </tr>
@@ -6467,7 +6514,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Floating point exception control <span class="warning">[Unix]</span>. </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/fpformat.html">fpformat</a></td>
+      <td><strike> <a href="http://docs.python.org/2.7/library/fpformat.html">fpformat</a> </strike></td>
       <td> General floating point formatting functions.
            <span class="since26">Deprecated since 2.6.</span> </td>
     </tr>
@@ -6558,15 +6605,15 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td>Helper to run the pystone benchmark under the Hotshot profiler.</td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/htmlentitydefs.html">htmlentitydefs</a></td>
-      <td> HTML character entity references. </td>
+      <td> <a href="http://docs.python.org/2.7/library/htmllib.html#module-htmlentitydefs">htmlentitydefs</a></td>
+      <td> HTML character entity references.  </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/htmllib.html"> htmllib </a></td>
-      <td> HTML2 parsing utilities </td>
+      <td> <strike> <a href="http://docs.python.org/2.7/library/htmllib.html"> htmllib </a> </strike> </td>
+      <td> HTML2 parsing utilities. <span class="since26"> Deprecated since 2.6; see <a href="http://docs.python.org/2.7/library/htmlparser.html">HTMLParser-class</a>.</span> </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/HTMLParser.html">HTMLParser</a></td>
+      <td> <a href="http://docs.python.org/2.7/library/htmlparser.html">HTMLParser</a></td>
       <td> Simple HTML and XHTML parser. </td>
     </tr>
     <tr>
@@ -6578,12 +6625,12 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td>(package) Support library for the IDLE development environment.</td>
     </tr>
     <tr>
-      <td> ihooks </td>
-      <td> Hooks into the &quot;import&quot; mechanism. <span class="since26">Deprecated since 2.6.</span> </td>
+      <td> <strike>ihooks</strike> </td>
+      <td> <strike>Hooks into the &quot;import&quot; mechanism.</strike> <span class="since26">Deprecated since 2.6.</span> </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/imageop.html"> imageop </a></td>
-      <td> Manipulate raw image data. <span class="since26">Deprecated since 2.6.</span> </td>
+      <td> <strike> imageop</strike> </td>
+      <td> <strike>Manipulate raw image data.</strike> <span class="since26">Deprecated since 2.6; removed in Python 3.</span> </td>
     </tr>
     <tr>
       <td> <a href="http://docs.python.org/2.7/library/imaplib.html"> imaplib </a></td>
@@ -6677,17 +6724,17 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Mathematical functions. See also <a href="http://docs.python.org/2.7/library/cmath.html">cmath</a></td>
     </tr>
     <tr>
-      <td> <strike> <a href="http://docs.python.org/2.5/library/module-md5.html"> md5 </a> </strike> </td>
+      <td> <strike> <a href="http://docs.python.org/2.7/library/module-md5.html"> md5 </a> </strike> </td>
       <td> <strike> MD5 message digest algorithm.
            <span class="since25">2.5: Now a mere wrapper around new library <code>hashlib</code>.</span></strike>
            <span class="since26"><b>Deprecated</b> since 2.6, use <code>hashlib</code> module instead.</span>  </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/mhlib.html"> mhlib </a></td>
+      <td> <strike> <a href="http://docs.python.org/2.7/library/mhlib.html"> mhlib </a> </strike> </td>
       <td> MH (mailbox) interface. <span class="since26">Deprecated since 2.6.</span></td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/mimetools.html">mimetools</a></td>
+      <td> <strike> <a href="http://docs.python.org/2.7/library/mimetools.html">mimetools</a> </strike> </td>
       <td> Various tools used by MIME-reading or MIME-writing programs.
            <span class="since26">Deprecated since 2.6.</span> </td>
     </tr>
@@ -6701,7 +6748,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
            use <code>email</code> package instead.</span> </td>
     </tr>
     <tr>
-      <td> <strike> <a href="http://docs.python.org/2.5/library/module-mimify.html"> mimify </a> </strike> </td>
+      <td> <strike> <a href="http://docs.python.org/2.7/library/mimify.html"> mimify </a> </strike> </td>
       <td> <strike> Mimification and unmimification of mail messages. </strike>
            <span class="since26"><b>Deprecated</b> since 2.6, use <code>email</code> package instead.</span> </td>
     </tr>
@@ -6722,7 +6769,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> File &amp; Console Windows-specific operations <span class="warning">[Windows]</span>. </td>
     </tr>
     <tr>
-      <td> <strike> <a href="http://docs.python.org/2.5/library/module-multifile.html">multifile</a> </strike> </td>
+      <td> <strike> <a href="http://docs.python.org/2.7/library/multifile.html">multifile</a> </strike> </td>
       <td> <strike> A readline()-style interface to the parts of a multipart message.</strike>
            <span class="since26">Deprecated since 2.6.</span> </td>
     </tr>
@@ -6742,7 +6789,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Parses and encapsulates the netrc file format. </td>
     </tr>
     <tr>
-      <td> <strike> <a href="http://docs.python.org/2.5/library/module-new.html"> new </a> </strike> </td>
+      <td> <strike> <a href="http://docs.python.org/2.7/library/new.html"> new </a> </strike> </td>
       <td> <strike> Creation of runtime internal objects (interface to interpreter object creation functions).</strike> 
            <span class="since26">Deprecated since 2.6.</span> </td>
     </tr>
@@ -6840,7 +6887,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> <strike>Polynomials.</strike> </td>
     </tr>
     <tr>
-      <td> <strike> <a href="http://docs.python.org/2.5/library/module-popen2.html"> popen2 </a> </strike> </td>
+      <td> <strike> <a href="http://docs.python.org/2.7/library/popen2.html"> popen2 </a> </strike> </td>
       <td> <strike> Spawn a command with pipes to its stdin, stdout, and optionally stderr.
            <span class="since24">Superseded by module <a href="#subprocess">subprocess</a> since 2.4.</span> </strike>
            <span class="since26">Deprecated since 2.6.</span> </td>
@@ -6859,7 +6906,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
            File-like objects with locking support <span class="warning">[Unix]</span>. </td>
     </tr> -->
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/posixpath.html">posixpath</a> </td>
+      <td> <a href="http://docs.python.org/2.7/library/os.path.html">posixpath</a> </td>
       <td> Common operations on POSIX pathnames. </td>
     </tr>
     <tr>
@@ -6876,7 +6923,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
            <span class="since25">2.5: See also new fast C implementation <code>cProfile</code></span></td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/pstats.html"> pstats </a> </td>
+      <td> <a href="http://docs.python.org/2.7/library/profile.html#the-stats-class"> pstats </a> </td>
       <td> Class for printing reports on profiled python code.
           <span class="since25">2.5: new <i>stream</i> arg to <code>Stats</code> constructor.</span> </td>
     </tr>
@@ -6910,7 +6957,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> <strike>Unit test framework inspired by JUnit.</strike> See <code>unittest</code>. </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/Queue.html"> Queue </a></td>
+      <td> <a href="http://docs.python.org/2.7/library/queue.html"> Queue </a></td>
       <td> A multi-producer, multi-consumer queue.
            <span class="since26">2.6: New queue variants <code>PriorityQueue</code> and <code>LifoQueue</code>.</span> </td>
     </tr>
@@ -6989,7 +7036,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Waiting for I/O completion. </td>
     </tr>
     <tr class="since23">
-      <td> <a class="since23" href="http://docs.python.org/2.7/library/sets.html"> sets </a></td>
+      <td> <strike> <a class="since23" href="http://docs.python.org/2.7/library/sets.html"> sets </a> </strike> </td>
       <td> A Set datatype implementation based on dictionaries.
            <span class="since26">Deprecated since 2.6, use built-in types <code>set</code> and <code>frozenset</code> instead.</span> </td>
     </tr>
@@ -6998,7 +7045,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> A parser for SGML, using the derived class as a static DTD. </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/sha.html"> sha </a></td>
+      <td> <strike> <a href="http://docs.python.org/2.7/library/sha.html"> sha </a> </strike> </td>
       <td> SHA-1 message digest algorithm.
            <span class="since25">2.5: Now a mere wrapper around new library <code>hashlib</code>.
            <span class="since26">Deprecated since 2.6, use <code>hashlib</code> instead.</span> </span> </td>
@@ -7020,11 +7067,11 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Set handlers for asynchronous events. </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/SimpleHTTPServer.html">SimpleHTTPServer</a></td>
+      <td> <a href="http://docs.python.org/2.7/library/simplehttpserver.html">SimpleHTTPServer</a></td>
       <td> Simple HTTP Server. </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/SimpleXMLRPCServer.html">SimpleXMLRPCServer</a></td>
+      <td> <a href="http://docs.python.org/2.7/library/simplexmlrpcserver.html">SimpleXMLRPCServer</a></td>
       <td> Simple XML-RPC Server.
            <span class="since25">2.5: New attribute <code>rpc_paths</code>.</span></td>
     </tr>
@@ -7053,7 +7100,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
            <code>getfamily()</code>, <code>gettype()</code> and <code>getproto()</code> .</span></td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/SocketServer.html">SocketServer</a></td>
+      <td> <a href="http://docs.python.org/2.7/library/socketserver.html">SocketServer</a></td>
       <td> Generic socket server classes. </td>
     </tr>
     <tr class="since25">
@@ -7073,11 +7120,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Constants/functions for interpreting results of <a href="#osModule">os</a>. </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/statcache.html">statcache</a></td>
-      <td> Maintain a cache of <code>stat()</code> information on files. </td>
-    </tr>
-    <tr>
-      <td> <strike> <a href="http://docs.python.org/2.5/library/module-statvfs.html"> statvfs </a> </strike> </td>
+      <td> <strike> <a href="http://docs.python.org/2.7/library/statvfs.html"> statvfs </a> </strike> </td>
       <td> <strike> Constants for interpreting statvfs struct as returned by <code>os.statvfs()</code>
            and <code>os.fstatvfs()</code> (if they exist). </strike>
            <span class="since26">Deprecated since 2.6.</span> </td>
@@ -7087,9 +7130,9 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> A collection of string operations (see <a href="#stringMethods">Strings</a>). </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/StringIO.html"> StringIO </a></td>
+      <td> <a href="http://docs.python.org/2.7/library/stringio.html"> StringIO </a></td>
       <td> File-like objects that read/write a string buffer (a faster C implementation exists
-           in built-in module <a href="http://docs.python.org/2.7/library/cStringIO.html">
+           in built-in module <a href="http://docs.python.org/2.7/library/stringio.html#module-cStringIO">
            cStringIO</a>). </td>
     </tr>
     <tr class="since23">
@@ -7136,7 +7179,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
 		   and the configuration variables relevant for the current platform.</td>
 	</tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/syslog .html"> syslog </a></td>
+      <td> <a href="http://docs.python.org/2.7/library/syslog.html"> syslog </a></td>
       <td> Unix syslog library routines <span class="warning">[Unix]</span>. </td>
     </tr>
     <tr class="since20">
@@ -7158,7 +7201,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
            <code>SpooledTemporaryFile</code> and <code>NamedTemporaryFile</code>.</span> </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/termios  .html"> termios </a></td>
+      <td> <a href="http://docs.python.org/2.7/library/termios.html"> termios </a></td>
       <td> POSIX style tty control <span class="warning">[Unix]</span>. </td>
     </tr>
     <tr>
@@ -7194,15 +7237,15 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Benchmark tool.</td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/Tix.html">Tix</a></td>
+      <td> <a href="http://docs.python.org/2.7/library/tix.html">Tix</a></td>
       <td> Extension widgets for Tk. </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/Tkinter.html">Tkinter </a></td>
+      <td> <a href="http://docs.python.org/2.7/library/tkinter.html">Tkinter </a></td>
       <td> Python interface to Tcl/Tk. </td>
     </tr>
     <tr>
-      <td> toaiff </td>
+      <td> <strike> toaiff </strike> </td>
       <td> Convert &quot;arbitrary&quot; sound files to AIFF (Apple and SGI's audio format).
            <span class="since26">Deprecated since 2.6.</span> </td>
     </tr>
@@ -7227,7 +7270,7 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Terminal utilities <span class="warning">[Unix]</span>.</td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/turtle.html"> turtle </a></td>
+      <td> <a href="http://docs.python.org/2.7/library/turtle.html"> turtle </a> <!-- Cool! --></td>
       <td> LogoMation-like turtle graphics. </td>
     </tr>
     <tr>
@@ -7266,19 +7309,19 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Hook to allow user-specified customization code to run. </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/UserDict.html"><strike>UserDict</strike></a></td>
+      <td> <a href="http://docs.python.org/2.7/library/userdict.html"><strike>UserDict</strike></a></td>
       <td> A wrapper to allow subclassing of built-in dict class
            <span class="since22">(useless with <a href="#typesClassesUnification"><i>new-style</i> classes</a>.
            Since Python 2.2, <code>dict</code> is subclassable)</span>.</td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/UserList.html"> <strike>UserList</strike></a></td>
+      <td> <a href="http://docs.python.org/2.7/library/userdict.html#module-UserList"> <strike>UserList</strike></a></td>
       <td> A wrapper to allow subclassing of built-in list class
            <span class="since22"> (useless with <a href="#typesClassesUnification"><i>new-style</i> classes</a>.
            Since Python 2.2, <code>list</code> is subclassable)</span></td>
     </tr>
     <tr class="since20">
-      <td> <a href="http://docs.python.org/2.7/library/UserString.html"><strike>UserString</strike></a></td>
+      <td> <a href="http://docs.python.org/2.7/library/userdict.html#module-UserString"><strike>UserString</strike></a></td>
       <td> A wrapper to allow subclassing of built-in string class
            <span class="since22">(useless with <a href="#typesClassesUnification"> <i>new-style</i> classes</a>.
            Since Python 2.2, <code>str</code> is subclassable)</span>. </td>
@@ -7323,8 +7366,8 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
       <td> Guess which db package to use to open a db file. </td>
     </tr>
     <tr>
-      <td> <a href="http://docs.python.org/2.7/library/whrandom.html">whrandom</a></td>
-      <td> Wichmann-Hill random number generator (obsolete, use <code>random</code> instead). </td>
+      <td> <strike> whrandom </strike> </td>
+      <td> <strike> Wichmann-Hill random number generator </strike> <span class="since25">(obsolete, use <code>random</code> instead).</span> </td>
     </tr>
     <tr>
       <td> <a href="http://docs.python.org/2.7/library/winsound.html#module-winsound"> winsound </a> </td>
@@ -7410,13 +7453,32 @@ Built-ins and content of python <code><b>Lib</b></code> directory. The subdirect
 <h2> <a id="Emacs" name="Emacs"></a> Python Mode for Emacs </h2>
 Emacs goodies available <a href="http://www.python.org/emacs/">here</a>.
 <pre><b>(The following has not been revised, probably not up to date - <span
- class="warning">any contribution welcome</span> -)</b><br /><br /> <br />Type C-c ? when in python-mode for extensive help.<br />INDENTATION<br />Primarily for entering new code:<br />        TAB      indent line appropriately<br />        LFD      insert newline, then indent<br />        DEL      reduce indentation, or delete single character<br />Primarily for reindenting existing code:<br />        C-c :    guess py-indent-offset from file content; change locally<br />        C-u C-c :        ditto, but change globally<br />        C-c TAB  reindent region to match its context<br />        C-c &lt;    shift region left by py-indent-offset<br />        C-c &gt;    shift region right by py-indent-offset<br />MARKING &amp; MANIPULATING REGIONS OF CODE<br />C-c C-b         mark block of lines<br />M-C-h           mark smallest enclosing def<br />C-u M-C-h       mark smallest enclosing class<br />C-c #           comment out region of code<br />C-u C-c #       uncomment region of code<br />MOVING POINT<br />C-c C-p         move to statement preceding point<br />C-c C-n         move to statement following point<br />C-c C-u         move up to start of current block<br />M-C-a           move to start of def<br />C-u M-C-a       move to start of class<br />M-C-e           move to end of def<br />C-u M-C-e       move to end of class<br />EXECUTING PYTHON CODE<br />C-c C-c sends the entire buffer to the Python interpreter<br />C-c |   sends the current region<br />C-c !   starts a Python interpreter window; this will be used by<br />        subsequent C-c C-c or C-c | commands<br />VARIABLES<br />py-indent-offset        indentation increment<br />py-block-comment-prefix comment string used by py-comment-region<br />py-python-command       shell command to invoke Python interpreter<br />py-scroll-process-buffer        t means always scroll Python process buffer<br />py-temp-directory       directory used for temp files (if needed)<br />py-beep-if-tab-change   ring the bell if tab-width is changed</pre>
+ class="warning">any contribution welcome</span> -)</b><br /><br /> <br />Type C-c ? when in python-mode for extensive help.<br />INDENTATION<br />Primarily for entering new code:<br />        TAB      indent line appropriately<br />        LFD      insert newline, then indent<br />        DEL      reduce indentation, or delete single character<br />Primarily for reindenting existing code:<br />        C-c :    guess py-indent-offset from file content; change locally<br />        C-u C-c :        ditto, but change globally<br />        C-c TAB  reindent region to match its context<br />        C-c &lt;    shift region left by py-indent-offset<br />        C-c &gt;    shift region right by py-indent-offset<br />MARKING &amp; MANIPULATING REGIONS OF CODE<br />C-c C-b         mark block of lines<br />M-C-h           mark smallest enclosing def<br />C-u M-C-h       mark smallest enclosing class<br />C-c #           comment out region of code<br />C-u C-c #       uncomment region of code<br />MOVING POINT<br />C-
+c C-p         move to statement preceding point<br />C-c C-n         move to statement following point<br />C-c C-u         move up to start of current block<br />M-C-a           move to start of def<br />C-u M-C-a       move to start of class<br />M-C-e           move to end of def<br />C-u M-C-e       move to end of class<br />EXECUTING PYTHON CODE<br />C-c C-c sends the entire buffer to the Python interpreter<br />C-c |   sends the current region<br />C-c !   starts a Python interpreter window; this will be used by<br />        subsequent C-c C-c or C-c | commands<br />VARIABLES<br />py-indent-offset        indentation increment<br />py-block-comment-prefix comment string used by py-comment-region<br />py-python-command       shell command to invoke Python interpreter<br />py-scroll-process-buffer        t means always scroll Python process buffer<br />py-temp-directory       directory used for temp files (if needed)<br />py-beep-if-tab-change   ring the bell if tab-width is changed</pre>
+
+<!-- Changes -->
+<h2> <a id="changes" name="changes">Changes to this document</a></h2>
+<dl>
+  <dt>April, 2013 (Stefan McKinnon H&oslash;j-Edwards)</dt>
+  <dd>Corrections
+    <ul>
+      <li>Added strikethrough to deprecated modules in <a href="#OtherModules">module-list</a>.</li>
+      <li>Corrected links in modules list.</li>
+      <li>Added a recipee for the secret <a href="#reScanner"><code>re.Scanner</code></a>.</li>
+      <li>Added context manager methods to <a href="#SpecialMethods">special methods in classes</a>.</li>
+    </ul>  
+  <dt>Oct, 2011 (Stefan McKinnon H&oslash;j-Edwards)</dt>
+  <dd>Upgraded to Python 2.7</dd>
+  <dt>Prior to Oct. 2011,</dt>
+  <dd>see <a href="#Fronstuff">Last updated on-list</a></dd>
+</dl>
 
 <!-- CONTENT END -->
       </td>
     </tr>
   </tbody>
 </table>
+
 
 <!-- Google Analytics -->
 <script type="text/javascript">
